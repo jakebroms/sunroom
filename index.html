@@ -52,6 +52,17 @@
   .facts li { background: var(--chip); border-radius: 999px; padding: 5px 12px; font-size: 0.86rem; }
   .facts b { font-weight: 500; }
 
+  /* tabs: the room as designed, and one-off layout ideas */
+  .tabs { display: flex; gap: 22px; border-bottom: 1px solid var(--rule); margin-top: 4px; }
+  .tabs button { font: inherit; font-weight: 400; font-size: 1rem; color: var(--muted); background: none; border: 0; padding: 10px 0 9px;
+                 border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; }
+  .tabs button[aria-selected="true"] { color: var(--fg); font-weight: 500; border-bottom-color: var(--accent); }
+  .tabs button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  [role="tabpanel"][hidden] { display: none; }
+  .idea { display: grid; gap: 14px; padding-top: 26px; }
+  .idea > h2 { font-weight: 500; font-size: 1.3rem; margin: 0; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .idea > h2 small { font-weight: 300; font-size: 0.95rem; color: var(--muted); }
+
   nav.times { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--rule); display: flex; gap: 6px; padding-block: 10px; overflow-x: auto; }
   nav.times a { color: var(--fg); text-decoration: none; font-weight: 400; font-size: 0.95rem; padding: 6px 14px; border-radius: 999px; white-space: nowrap; }
   nav.times a:hover, nav.times a:focus-visible { background: var(--chip); outline: none; }
@@ -98,6 +109,21 @@
     </details>
   </header>
 
+  <div class="tabs" role="tablist" aria-label="Views">
+    <button role="tab" id="tab-room" aria-controls="panel-room" aria-selected="true">The room</button>
+    <button role="tab" id="tab-ideas" aria-controls="panel-ideas" aria-selected="false" tabindex="-1">Layout ideas</button>
+  </div>
+
+  <div role="tabpanel" id="panel-ideas" aria-labelledby="tab-ideas" hidden>
+    <section class="idea">
+      <h2>Yoga and kids' crafts <small>winter, 9:30 am</small></h2>
+      <p class="note">The zone past the divider set up for yoga and crafts: a mat, cork blocks and a bolster along the garage wall where the loveseat was, and floor cushions at the low table for kneeling kids. No rug, so spills wipe up. Matte black door hardware.</p>
+      <figure class="shot"><img src="photos/ideas/yoga_crafts_winter_am930.jpg" alt="Yoga mat along the garage wall and a kids' craft table with floor cushions, seen from just inside the house door" loading="lazy">
+        <figcaption><span class="num">1</span><span class="view">Just inside the house door</span><span class="what">yoga mat, bolster, craft table, black levers</span></figcaption></figure>
+    </section>
+  </div>
+
+  <div role="tabpanel" id="panel-room" aria-labelledby="tab-room">
   <nav class="times" aria-label="Time of day">
     <a href="#morning">Morning</a>
     <a href="#midday">Midday</a>
@@ -153,6 +179,7 @@
       <figcaption><span class="num">5</span><span class="view">Mud zone</span><span class="what">bench, boot tray, stairs down outside the driveway door</span></figcaption></figure>
     <!--SHOTS-END:late-->
   </section>
+  </div>
 
   <footer>Renders of a design, not photos. The rattan furniture, rug and egg chair are modeled stand-ins for the style; plants, pillows and props are scanned models.</footer>
 </div>
@@ -185,6 +212,25 @@
   if (location.hash === "#winter") start = "winter";
   else { try { start = localStorage.getItem("sunroom-season") || "fall"; } catch (e) {} }
   if (start === "winter") set("winter", false);
+
+  // tabs (arrow keys move between them); #layout-ideas opens the ideas tab
+  var tabs = [document.getElementById("tab-room"), document.getElementById("tab-ideas")];
+  function show(tab, focus) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute("aria-selected", on ? "true" : "false"); t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+    if (focus) tab.focus();
+    try { history.replaceState(null, "", tab.id === "tab-ideas" ? "#layout-ideas" : location.pathname + location.search); } catch (e) {}
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { show(t, false); });
+    t.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); show(tabs[(i + 1) % 2], true); }
+    });
+  });
+  if (location.hash === "#layout-ideas") show(tabs[1], false);
 })();
 </script>
 </body>
