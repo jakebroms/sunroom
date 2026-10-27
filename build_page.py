@@ -2,7 +2,7 @@
 import pathlib
 
 VIEWS = [("WindowCorner", "Window corner", "egg chair, both banks of windows, mini split"),
-         ("WestWall", "West wall", "backyard door, house off to the left, plant stand"),
+         ("WestWall", "North wall", "backyard door, house off to the left, plant stand"),
          ("Doorway", "From the house door", "looking toward the backyard windows"),
          ("SofaWall", "Loveseat wall", "garage door and driveway door, brass levers"),
          ("LookBack", "Mud zone", "bench, boot tray, stairs down outside the driveway door")]
