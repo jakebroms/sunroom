@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sunroom Paint Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500&display=swap">
+<style>
+  /* One photo stays put and only the paint changes: a dark, neutral surround so the frames are judged by themselves. */
+  :root {
+    --bg: #171a18; --panel: #202422; --line: #343a36; --fg: #ece9e1; --muted: #a7a89f; --accent: #b9a06a; --on-accent: #1a1a16;
+    --font: "Work Sans", "Segoe UI", system-ui, sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font); font-weight: 300; font-size: 16px; line-height: 1.5; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding-block: 20px 40px;
+          padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 14px; }
+  header { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 20px; flex-wrap: wrap; }
+  h1 { font-weight: 300; font-size: clamp(1.5rem, 3.4vw, 2.1rem); line-height: 1.15; margin: 0; }
+  .views { display: flex; gap: 4px; flex-wrap: wrap; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .views button { padding: 6px 12px; border-radius: 3px; color: var(--muted); font-size: 0.92rem; }
+  .views button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); font-weight: 500; }
+  .book { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 18px; align-items: start; }
+  .stage { display: grid; gap: 10px; min-width: 0; }
+  .photo { position: relative; aspect-ratio: 5 / 4; max-width: 100%; background: var(--panel); touch-action: pan-y; user-select: none; }
+  .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pager { display: flex; align-items: center; gap: 12px; }
+  .pager button { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 3px; font-size: 1.15rem; }
+  .pager button:hover { background: var(--panel); }
+  .now { min-width: 0; flex: 1; }
+  .now b { font-weight: 500; display: block; }
+  .now span { color: var(--muted); font-size: 0.92rem; }
+  .pageno { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 0.92rem; white-space: nowrap; }
+  aside { display: grid; gap: 2px; min-width: 0; align-content: start; }
+  .frame { display: grid; grid-template-columns: 1.4em minmax(0, 1fr); gap: 2px 8px; width: 100%; text-align: left; padding: 7px 8px; border-left: 2px solid transparent; }
+  .frame:hover { background: var(--panel); }
+  .frame[aria-current="true"] { background: var(--panel); border-left-color: var(--accent); }
+  .frame .n { font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 500; }
+  .frame .w { font-weight: 500; font-size: 0.92rem; }
+  .frame .t { grid-column: 2; color: var(--muted); font-size: 0.84rem; }
+  .notes { color: var(--muted); font-size: 0.86rem; max-width: 76ch; display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 12px; }
+  .notes p { margin: 0; }
+  @media (max-width: 900px) { .book { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Sunroom Paint Options</h1>
+    <div class="views" role="group" aria-label="View">
+      <button data-view="_rake" aria-pressed="true">Along the wall</button>
+      <button data-view="" aria-pressed="false">Whole room</button>
+      <button data-view="_close" aria-pressed="false">Trim close-up</button>
+    </div>
+  </header>
+  <div class="book">
+    <div class="stage">
+      <div class="photo" id="photo"><img id="shot" alt=""></div>
+      <div class="pager">
+        <button id="prev" aria-label="Previous option">&#8249;</button>
+        <div class="now" aria-live="polite"><b id="nowWall"></b><span id="nowTrim"></span></div>
+        <span class="pageno" id="pageno"></span>
+        <button id="next" aria-label="Next option">&#8250;</button>
+      </div>
+    </div>
+    <aside id="list"></aside>
+  </div>
+  <div class="notes">
+    <p>Flip with the arrow keys, the buttons, or a swipe. The view along the wall looks toward the windows, where glare on paint shows most.</p>
+    <p>All four are shown at midday in fall. Compare them for color: exposure is set per option, so brightness differs from one to the next.</p>
+    <p>Walls are eggshell in option 1 and matte in the others. Trim and crown are semi-gloss. Doors are satin, except semi-gloss in option 2. Windows are white in every option, handles are matte black and the floor is the same walnut tone. Option 2 has a woven dome light; the others have a black globe.</p>
+    <p>Colors are screen values for the named chips, and option 2 uses design-target colors. Brush a real sample in the room before buying.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var FRAMES = [
+    { id: "7_roycroft_egshel", name: "Billiard Green", wall: "SW Billiard Green SW 0016", trim: "SW Roycroft Vellum SW 2833", door: "SW Roycroft Bottle Green SW 2847" },
+    { id: "10_camel_matte", name: "Camel and cream", wall: "Camel", trim: "Cream", door: "Cream" },
+    { id: "13_oxblood", name: "Oxblood", wall: "SW Rookwood Red SW 2802", trim: "SW Accessible Beige SW 7036", door: "SW Turkish Coffee SW 6076" },
+    { id: "16_ochre_white_doors", name: "Ochre with Lime White doors", wall: "F&B India Yellow No. 66", trim: "F&B London Clay No. 244", door: "F&B Lime White No. 1" }
+  ];
+  var i = 0, view = "_rake";
+  var shot = document.getElementById("shot"), list = document.getElementById("list");
+  var src = function (f, v) { return "book/" + f.id + v + ".jpg"; };
+  var label = function (f) { return f.name + ": " + f.wall + " walls"; };
+  var trimLine = function (f) { return "Trim: " + f.trim + ". Doors: " + f.door; };
+  FRAMES.forEach(function (f, fi) {
+    var b = document.createElement("button"); b.className = "frame"; b.id = "f" + fi;
+    var a = document.createElement("span"); a.className = "n"; a.textContent = fi + 1;
+    var c = document.createElement("span"); c.className = "w"; c.textContent = f.name;
+    var d = document.createElement("span"); d.className = "t"; d.textContent = f.wall + " walls, trim " + f.trim + ", doors " + f.door;
+    b.appendChild(a); b.appendChild(c); b.appendChild(d);
+    b.addEventListener("click", function () { show(fi); });
+    list.appendChild(b);
+  });
+  function show(n) {
+    i = (n + FRAMES.length) % FRAMES.length;
+    var f = FRAMES[i];
+    shot.src = src(f, view); shot.alt = label(f) + ". " + trimLine(f);
+    document.getElementById("nowWall").textContent = label(f);
+    document.getElementById("nowTrim").textContent = trimLine(f);
+    document.getElementById("pageno").textContent = (i + 1) + " of " + FRAMES.length;
+    FRAMES.forEach(function (x, k) { document.getElementById("f" + k).setAttribute("aria-current", k === i ? "true" : "false"); });
+  }
+  document.getElementById("prev").addEventListener("click", function () { show(i - 1); });
+  document.getElementById("next").addEventListener("click", function () { show(i + 1); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); show(i + 1); }
+    if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); show(i - 1); }
+  });
+  document.querySelectorAll(".views button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      view = b.getAttribute("data-view");
+      document.querySelectorAll(".views button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      show(i);
+    });
+  });
+  var photo = document.getElementById("photo"), x0 = null;
+  photo.addEventListener("pointerdown", function (e) { x0 = e.clientX; });
+  photo.addEventListener("pointerup", function (e) {
+    if (x0 === null) return; var dx = e.clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) show(i + (dx < 0 ? 1 : -1));
+  });
+  // load every frame up front so flipping is instant
+  ["", "_rake", "_close"].forEach(function (v) { FRAMES.forEach(function (f) { new Image().src = src(f, v); }); });
+  show(0);
+})();
+</script>
+</body>
+</html>
