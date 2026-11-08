@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Sunroom Paint Options</title>
+<title>Sunroom Floor Options</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500&display=swap">
@@ -36,7 +36,10 @@
   .now b { font-weight: 500; display: block; }
   .now span { color: var(--muted); font-size: 0.92rem; }
   .pageno { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 0.92rem; white-space: nowrap; }
-  aside { display: grid; gap: 2px; min-width: 0; align-content: start; }
+  aside { display: grid; gap: 14px; min-width: 0; align-content: start; }
+  .group { display: grid; gap: 2px; }
+  .group h2 { font-weight: 500; font-size: 0.95rem; margin: 0 0 2px; }
+  .group p { margin: 0 0 6px; color: var(--muted); font-size: 0.86rem; }
   .frame { display: grid; grid-template-columns: 1.4em minmax(0, 1fr); gap: 2px 8px; width: 100%; text-align: left; padding: 7px 8px; border-left: 2px solid transparent; }
   .frame:hover { background: var(--panel); }
   .frame[aria-current="true"] { background: var(--panel); border-left-color: var(--accent); }
@@ -51,10 +54,10 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>Sunroom Paint Options</h1>
+    <h1>Sunroom Floor Options</h1>
     <div class="views" role="group" aria-label="View">
-      <button data-view="_rake" aria-pressed="true">Along the wall</button>
-      <button data-view="" aria-pressed="false">Whole room</button>
+      <button data-view="" aria-pressed="true">Whole room</button>
+      <button data-view="_rake" aria-pressed="false">Along the wall</button>
       <button data-view="_close" aria-pressed="false">Trim close-up</button>
     </div>
   </header>
@@ -71,34 +74,44 @@
     <aside id="list"></aside>
   </div>
   <div class="notes">
-    <p>Flip with the arrow keys, the buttons, or a swipe. The view along the wall looks toward the windows, where glare on paint shows most.</p>
-    <p>All four are shown at midday in fall. Compare them for color: exposure is set per option, so brightness differs from one to the next.</p>
-    <p>Walls are eggshell in option 1 and matte in the others. Trim and crown are semi-gloss. Doors are satin, except semi-gloss in option 2. Windows are white in every option, handles are matte black and the floor is the same walnut tone. Option 2 has a woven dome light; the others have a black globe.</p>
-    <p>Colors are screen values for the named chips, and option 2 uses design-target colors. Brush a real sample in the room before buying.</p>
+    <p>Flip with the arrow keys, the buttons, or a swipe. Within a room, only the floor changes: same camera, light and exposure. The view along the wall looks toward the windows.</p>
+    <p>All six are shown at midday in fall. The two rooms are exposed separately, so compare floors within a room rather than brightness across rooms.</p>
+    <p>Floors are the three Minwax stains on white oak, colored to the stain chart. Billiard Green has eggshell walls, Oxblood has matte walls; trim and crown are semi-gloss and doors are satin in both. Windows are white, handles are matte black, and the light is a black globe.</p>
+    <p>Colors are screen values for the named chips. Put a real stain sample on a real board in the room before deciding.</p>
   </div>
 </div>
 
 <script>
 (function () {
-  var FRAMES = [
-    { id: "7_roycroft_egshel", name: "Billiard Green", wall: "SW Billiard Green SW 0016", trim: "SW Roycroft Vellum SW 2833", door: "SW Roycroft Bottle Green SW 2847" },
-    { id: "10_camel_matte", name: "Camel and cream", wall: "Camel", trim: "Cream", door: "Cream" },
-    { id: "13_oxblood", name: "Oxblood", wall: "SW Rookwood Red SW 2802", trim: "SW Accessible Beige SW 7036", door: "SW Turkish Coffee SW 6076" },
-    { id: "16_ochre_white_doors", name: "Ochre with Lime White doors", wall: "F&B India Yellow No. 66", trim: "F&B London Clay No. 244", door: "F&B Lime White No. 1" }
+  var FLOORS = { natural: "Minwax Natural 209 on white oak", provincial: "Minwax Provincial 211 on white oak", jacobean: "Minwax Jacobean 2750 on white oak" };
+  var ROOMS = [
+    { name: "Billiard Green", note: "Walls SW Billiard Green SW 0016, trim SW Roycroft Vellum SW 2833, doors SW Roycroft Bottle Green SW 2847." },
+    { name: "Oxblood", note: "Walls SW Rookwood Red SW 2802, trim SW Accessible Beige SW 7036, doors SW Turkish Coffee SW 6076." }
   ];
-  var i = 0, view = "_rake";
+  var FRAMES = [
+    { id: "8_roycroft_natural", r: 0, f: "natural" }, { id: "8_roycroft_provincial", r: 0, f: "provincial" }, { id: "8_roycroft_jacobean", r: 0, f: "jacobean" },
+    { id: "13_oxblood_natural", r: 1, f: "natural" }, { id: "13_oxblood_provincial", r: 1, f: "provincial" }, { id: "13_oxblood_jacobean", r: 1, f: "jacobean" }
+  ];
+  var i = 0, view = "";
   var shot = document.getElementById("shot"), list = document.getElementById("list");
   var src = function (f, v) { return "book/" + f.id + v + ".jpg"; };
-  var label = function (f) { return f.name + ": " + f.wall + " walls"; };
-  var trimLine = function (f) { return "Trim: " + f.trim + ". Doors: " + f.door; };
-  FRAMES.forEach(function (f, fi) {
-    var b = document.createElement("button"); b.className = "frame"; b.id = "f" + fi;
-    var a = document.createElement("span"); a.className = "n"; a.textContent = fi + 1;
-    var c = document.createElement("span"); c.className = "w"; c.textContent = f.name;
-    var d = document.createElement("span"); d.className = "t"; d.textContent = f.wall + " walls, trim " + f.trim + ", doors " + f.door;
-    b.appendChild(a); b.appendChild(c); b.appendChild(d);
-    b.addEventListener("click", function () { show(fi); });
-    list.appendChild(b);
+  var label = function (f) { return ROOMS[f.r].name + ": " + FLOORS[f.f]; };
+  var trimLine = function (f) { return ROOMS[f.r].note; };
+  ROOMS.forEach(function (r, ri) {
+    var g = document.createElement("div"); g.className = "group";
+    var h = document.createElement("h2"); h.textContent = r.name; g.appendChild(h);
+    var n = document.createElement("p"); n.textContent = r.note; g.appendChild(n);
+    FRAMES.forEach(function (f, fi) {
+      if (f.r !== ri) return;
+      var b = document.createElement("button"); b.className = "frame"; b.id = "f" + fi;
+      var a = document.createElement("span"); a.className = "n"; a.textContent = fi + 1;
+      var c = document.createElement("span"); c.className = "w"; c.textContent = FLOORS[f.f].replace(" on white oak", "");
+      var d = document.createElement("span"); d.className = "t"; d.textContent = "on white oak";
+      b.appendChild(a); b.appendChild(c); b.appendChild(d);
+      b.addEventListener("click", function () { show(fi); });
+      g.appendChild(b);
+    });
+    list.appendChild(g);
   });
   function show(n) {
     i = (n + FRAMES.length) % FRAMES.length;
