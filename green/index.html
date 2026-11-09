@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sunroom in Green</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500&display=swap">
+<style>
+  :root {
+    --bg: #171a18; --panel: #202422; --line: #343a36; --fg: #ece9e1; --muted: #a7a89f; --accent: #b9a06a;
+    --font: "Work Sans", "Segoe UI", system-ui, sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font); font-weight: 300; font-size: 16px; line-height: 1.5; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding-block: 20px 48px;
+          padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  header { display: grid; gap: 6px; margin-bottom: 22px; }
+  h1 { font-weight: 300; font-size: clamp(1.5rem, 3.4vw, 2.1rem); line-height: 1.15; margin: 0; }
+  header p { margin: 0; color: var(--muted); font-size: 0.95rem; max-width: 70ch; }
+  .shots { display: grid; gap: 28px; }
+  figure { margin: 0; display: grid; gap: 8px; }
+  figure img { display: block; width: 100%; height: auto; background: var(--panel); }
+  figcaption { display: flex; gap: 6px 14px; flex-wrap: wrap; align-items: baseline; }
+  figcaption b { font-weight: 500; }
+  figcaption span { color: var(--muted); font-size: 0.92rem; }
+  .notes { color: var(--muted); font-size: 0.86rem; max-width: 76ch; display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 12px; margin-top: 30px; }
+  .notes p { margin: 0; }
+  .notes a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Sunroom in Green</h1>
+    <p>The chosen palette from every angle, at midday in fall. Walls SW 0016 Billiard Green, trim and crown SW 2833 Roycroft Vellum, doors SW 2847 Roycroft Bottle Green, ceiling SW 7008 Alabaster, floor Minwax Provincial 211 on white oak.</p>
+  </header>
+  <div class="shots">
+    <figure><img src="photos/WindowCorner.jpg" alt="Window corner: egg chair, both banks of windows and the mini split" width="1800" height="1200" loading="eager"><figcaption><b>Window corner</b><span>egg chair, both banks of windows, mini split</span></figcaption></figure>
+    <figure><img src="photos/WestWall.jpg" alt="North wall: backyard door, house off to the left, plant stand" width="1800" height="1200" loading="lazy"><figcaption><b>North wall</b><span>backyard door, house off to the left, plant stand</span></figcaption></figure>
+    <figure><img src="photos/Doorway.jpg" alt="From the house door, looking toward the backyard windows" width="1800" height="1200" loading="lazy"><figcaption><b>From the house door</b><span>looking toward the backyard windows</span></figcaption></figure>
+    <figure><img src="photos/DoorwayIn.jpg" alt="One step in from the house door, past the divider to the far end" width="1800" height="1200" loading="lazy"><figcaption><b>One step in</b><span>past the divider to the far end of the room</span></figcaption></figure>
+    <figure><img src="photos/SofaWall.jpg" alt="Loveseat wall: garage door and driveway door, black levers" width="1800" height="1200" loading="lazy"><figcaption><b>Loveseat wall</b><span>garage door and driveway door, black levers</span></figcaption></figure>
+    <figure><img src="photos/LookBack.jpg" alt="Mud zone: bench, boot tray, stairs down outside the driveway door" width="1800" height="1200" loading="lazy"><figcaption><b>Mud zone</b><span>bench, boot tray, stairs down outside the driveway door</span></figcaption></figure>
+    <figure><img src="photos/ColorPick.jpg" alt="Whole room from the loveseat end" width="1800" height="1440" loading="lazy"><figcaption><b>Whole room</b><span>from the loveseat end, the view used in the flip book</span></figcaption></figure>
+    <figure><img src="photos/Raking.jpg" alt="Along the garage wall toward the east windows" width="1800" height="1440" loading="lazy"><figcaption><b>Along the wall</b><span>down the garage wall toward the windows</span></figcaption></figure>
+  </div>
+  <div class="notes">
+    <p>Walls are eggshell, the ceiling flat, trim and crown semi-gloss, doors satin. Windows are white vinyl and the handles are matte black. Each photo is exposed on its own.</p>
+    <p>Colors are screen values for the named chips. Check real samples in the room, in morning light.</p>
+    <p>The floor and ceiling comparisons are in the <a href="../flipbook/">flip book</a>.</p>
+  </div>
+</div>
+</body>
+</html>
