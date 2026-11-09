@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Sunroom Floor Options</title>
+<title>Sunroom Options</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500&display=swap">
@@ -54,7 +54,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>Sunroom Floor Options</h1>
+    <h1>Sunroom Options</h1>
     <div class="views" role="group" aria-label="View">
       <button data-view="" aria-pressed="true">Whole room</button>
       <button data-view="_rake" aria-pressed="false">Along the wall</button>
@@ -74,28 +74,32 @@
     <aside id="list"></aside>
   </div>
   <div class="notes">
-    <p>Flip with the arrow keys, the buttons, or a swipe. Within a room, only the floor changes: same camera, light and exposure. The view along the wall looks toward the windows.</p>
-    <p>All six are shown at midday in fall. The two rooms are exposed separately, so compare floors within a room rather than brightness across rooms.</p>
-    <p>Floors are the three Minwax stains on white oak, colored to the stain chart. Billiard Green has eggshell walls, Oxblood has matte walls; trim and crown are semi-gloss and doors are satin in both. Windows are white, handles are matte black, and the light is a black globe.</p>
-    <p>Colors are screen values for the named chips. Put a real stain sample on a real board in the room before deciding.</p>
+    <p>Flip with the arrow keys, the buttons, or a swipe. Within a room, the camera, light and exposure stay the same, so what changes is the floor, or the ceiling in the last frame of each room. The view along the wall looks toward the windows.</p>
+    <p>All frames are shown at midday in fall. Each room is exposed on its own, so compare within a room rather than brightness across rooms.</p>
+    <p>Floors are the three Minwax stains on white oak, colored to the stain chart. The ceiling frames paint the ceiling the wall color at the walls' sheen; the crown stays in the trim color. Billiard Green has eggshell walls, the other two rooms matte; trim and crown are semi-gloss and doors satin, except the brown trim, which is satin. Windows are white, handles are matte black, and the light is a black globe.</p>
+    <p>Colors are screen values for the named chips. Put real samples in the room before deciding.</p>
   </div>
 </div>
 
 <script>
 (function () {
-  var FLOORS = { natural: "Minwax Natural 209 on white oak", provincial: "Minwax Provincial 211 on white oak", jacobean: "Minwax Jacobean 2750 on white oak" };
+  var FLOORS = { natural: "Minwax Natural 209 on white oak", provincial: "Minwax Provincial 211 on white oak", jacobean: "Minwax Jacobean 2750 on white oak", asis: "Walnut-tone floor" };
   var ROOMS = [
     { name: "Billiard Green", note: "Walls SW Billiard Green SW 0016, trim SW Roycroft Vellum SW 2833, doors SW Roycroft Bottle Green SW 2847." },
-    { name: "Oxblood", note: "Walls SW Rookwood Red SW 2802, trim SW Accessible Beige SW 7036, doors SW Turkish Coffee SW 6076." }
+    { name: "Oxblood", note: "Walls SW Rookwood Red SW 2802, trim SW Accessible Beige SW 7036, doors SW Turkish Coffee SW 6076." },
+    { name: "Green with brown trim", note: "Dark green walls in Emerald Matte; trim, crown and doors painted dark brown in Urethane Satin. Floor as in the earlier renders." }
   ];
   var FRAMES = [
     { id: "8_roycroft_natural", r: 0, f: "natural" }, { id: "8_roycroft_provincial", r: 0, f: "provincial" }, { id: "8_roycroft_jacobean", r: 0, f: "jacobean" },
-    { id: "13_oxblood_natural", r: 1, f: "natural" }, { id: "13_oxblood_provincial", r: 1, f: "provincial" }, { id: "13_oxblood_jacobean", r: 1, f: "jacobean" }
+    { id: "8_roycroft_provincial_ceiling", r: 0, f: "provincial", ceiling: true },
+    { id: "13_oxblood_natural", r: 1, f: "natural" }, { id: "13_oxblood_provincial", r: 1, f: "provincial" }, { id: "13_oxblood_jacobean", r: 1, f: "jacobean" },
+    { id: "13_oxblood_provincial_ceiling", r: 1, f: "provincial", ceiling: true },
+    { id: "2_matte_satin", r: 2, f: "asis" }, { id: "2_matte_satin_ceiling", r: 2, f: "asis", ceiling: true }
   ];
   var i = 0, view = "";
   var shot = document.getElementById("shot"), list = document.getElementById("list");
   var src = function (f, v) { return "book/" + f.id + v + ".jpg"; };
-  var label = function (f) { return ROOMS[f.r].name + ": " + FLOORS[f.f]; };
+  var label = function (f) { return ROOMS[f.r].name + ": " + FLOORS[f.f] + (f.ceiling ? ", ceiling in the wall color" : ""); };
   var trimLine = function (f) { return ROOMS[f.r].note; };
   ROOMS.forEach(function (r, ri) {
     var g = document.createElement("div"); g.className = "group";
@@ -105,8 +109,8 @@
       if (f.r !== ri) return;
       var b = document.createElement("button"); b.className = "frame"; b.id = "f" + fi;
       var a = document.createElement("span"); a.className = "n"; a.textContent = fi + 1;
-      var c = document.createElement("span"); c.className = "w"; c.textContent = FLOORS[f.f].replace(" on white oak", "");
-      var d = document.createElement("span"); d.className = "t"; d.textContent = "on white oak";
+      var c = document.createElement("span"); c.className = "w"; c.textContent = f.ceiling ? "Ceiling in the wall color" : FLOORS[f.f].replace(" on white oak", "");
+      var d = document.createElement("span"); d.className = "t"; d.textContent = f.ceiling ? "with " + FLOORS[f.f] : (f.f === "asis" ? "as in the earlier renders" : "on white oak");
       b.appendChild(a); b.appendChild(c); b.appendChild(d);
       b.addEventListener("click", function () { show(fi); });
       g.appendChild(b);
